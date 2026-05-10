@@ -1,0 +1,230 @@
+.generate-page {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  padding: 32px;
+  height: 100%;
+  min-height: 0;
+}
+
+.generate-page__form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.generate-page__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.generate-page__label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.generate-page__textarea {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  color: var(--color-text-primary);
+  font-family: inherit;
+  font-size: 0.875rem;
+  padding: 12px 16px;
+  resize: none;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.generate-page__textarea::placeholder {
+  color: var(--color-text-muted);
+}
+
+.generate-page__textarea:focus {
+  border-color: var(--color-accent-purple);
+}
+
+.generate-page__colors {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.generate-page__color-swatch {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    transform 0.15s;
+}
+
+.generate-page__color-swatch:hover {
+  transform: scale(1.1);
+}
+
+.generate-page__color-swatch--active {
+  border-color: white;
+}
+
+.generate-page__color-clear {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  transition:
+    border-color 0.2s,
+    color 0.2s;
+}
+
+.generate-page__color-clear:hover {
+  border-color: var(--color-text-primary);
+  color: var(--color-text-primary);
+}
+
+.generate-page__resolutions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.generate-page__resolution-pill {
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-primary);
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+  white-space: nowrap;
+}
+
+.generate-page__resolution-pill:hover {
+  background: var(--color-border);
+}
+
+.generate-page__resolution-pill--active {
+  background: var(--color-accent-purple);
+  border-color: var(--color-accent-purple);
+  color: white;
+}
+
+.generate-page__slider {
+  width: 100%;
+  accent-color: var(--color-accent-purple);
+  cursor: pointer;
+  height: 4px;
+}
+
+.generate-page__error {
+  color: var(--color-red);
+  font-size: 0.875rem;
+}
+
+.generate-page__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: var(--color-accent-purple);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 16px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  font-family: inherit;
+}
+
+.generate-page__btn:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.generate-page__btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.generate-page__btn img {
+  filter: brightness(10);
+}
+
+.generate-page__preview {
+  background: var(--color-bg-secondary);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  height: 100%;
+  min-height: 300px;
+}
+
+.generate-page__preview-img {
+  border: 6px solid var(--color-bg-secondary);
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.generate-page__preview-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.generate-page__preview-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+}
+
+.generate-page__spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-accent-purple);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 900px) {
+  .generate-page {
+    grid-template-columns: 1fr;
+    padding: 20px;
+    gap: 20px;
+  }
+
+  .generate-page__preview {
+    min-height: 300px;
+  }
+}

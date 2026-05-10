@@ -1,0 +1,73 @@
+.signin-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 300;
+  padding: 24px;
+}
+
+.signin-modal {
+  background: var(--color-bg-secondary);
+  border-radius: 16px;
+  padding: 48px 40px;
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.signin-modal__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: var(--color-border);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.signin-modal__close:hover {
+  background: var(--color-accent-purple);
+}
+
+.signin-modal__title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+  text-align: center;
+}
+
+.signin-modal__github-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: var(--color-accent-purple);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  padding: 13px 28px;
+  cursor: pointer;
+  width: 100%;
+  transition: opacity 0.2s;
+  font-family: inherit;
+}
+
+.signin-modal__github-btn:hover {
+  opacity: 0.9;
+}
