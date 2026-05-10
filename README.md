@@ -1,36 +1,119 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Image Generator
+
+A full-stack AI image generator built with Next.js 16, powered by HuggingFace FLUX.1-schnell. Users sign in with GitHub, generate images from text prompts, browse a community feed, and save their favourite images to a personal collection.
+
+## Features
+
+- **Text-to-image generation** — prompt, negative prompt, color tint, resolution, and guidance scale
+- **Community feed** — browsable masonry grid with full-text search
+- **Personal history** — all images you've generated
+- **Collections** — bookmark any image from the feed
+- **Dark / light theme** — persisted via Zustand
+- **Responsive** — desktop two-column layout, mobile sidebar drawer
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 16 (App Router) |
+| Language | TypeScript |
+| Auth | NextAuth v5 — GitHub OAuth |
+| Database | Neon PostgreSQL (`@neondatabase/serverless`) |
+| Image AI | HuggingFace Inference API — FLUX.1-schnell |
+| State | Zustand |
+| Styling | CSS Modules + CSS custom properties |
 
 ## Getting Started
 
-First, run the development server:
+### 1. Clone and install
+
+```bash
+git clone https://github.com/mcastig/ai-image-generator.git
+cd ai-image-generator
+npm install
+```
+
+### 2. Set up environment variables
+
+Create `.env.local` at the project root:
+
+```env
+# NextAuth
+AUTH_SECRET=<run: npx auth secret>
+AUTH_GITHUB_ID=<your GitHub OAuth App client id>
+AUTH_GITHUB_SECRET=<your GitHub OAuth App client secret>
+
+# Database
+DATABASE_URL=<your Neon or local Postgres connection string>
+
+# HuggingFace
+HUGGINGFACE_API_TOKEN=<your HuggingFace read token>
+```
+
+#### Where to get each value
+
+- **AUTH_SECRET** — run `npx auth secret` and paste the output
+- **AUTH_GITHUB_ID / SECRET** — create an OAuth App at [github.com/settings/developers](https://github.com/settings/developers); set the callback URL to `http://localhost:3000/api/auth/callback/github`
+- **DATABASE_URL** — create a free project at [neon.tech](https://neon.tech) or run local Postgres with Docker (see below)
+- **HUGGINGFACE_API_TOKEN** — create a free Read token at [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
+
+### 3. Set up the database
+
+**Option A — Local Docker**
+
+```bash
+docker compose up -d
+```
+
+This starts Postgres and runs `docker/postgres/init.sql` to create the schema.
+
+**Option B — Neon**
+
+Copy the connection string from your Neon dashboard into `DATABASE_URL` and run the SQL in `docker/postgres/init.sql` via the Neon SQL editor.
+
+### 4. Run the dev server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run dev      # Dev server with hot reload
+npm run build    # Production build
+npm run start    # Serve production build
+npm run lint     # ESLint
+npx tsc --noEmit # Type-check without building
+```
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+├── app/
+│   ├── api/           — API routes (generate, feed, history, collection, image)
+│   ├── globals.css    — CSS custom properties, dark/light theme
+│   ├── layout.tsx     — Root layout
+│   └── page.tsx       — Single-page shell with tab switching
+├── auth.ts            — NextAuth v5 configuration
+├── components/        — UI components (Sidebar, GeneratePage, FeedPage, …)
+├── lib/
+│   ├── db.ts          — Neon/Postgres client
+│   └── hf.ts          — HuggingFace FLUX.1-schnell helper
+├── store/
+│   └── useStore.ts    — Zustand global store
+└── types/
+    └── index.ts       — Shared types and constants
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Database Schema
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```sql
+users        — id, github_id, name, email, avatar_url, created_at
+images       — id, user_id, prompt, negative_prompt, color, resolution,
+               guidance, image_url, seed, created_at
+saved_images — user_id, image_id, created_at
+```

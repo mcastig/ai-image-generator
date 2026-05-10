@@ -30,6 +30,7 @@ Single-page app: the root `src/app/page.tsx` renders all "pages" as tab-switched
 |------|---------|
 | `src/auth.ts` | NextAuth v5 config — GitHub OAuth, JWT & session callbacks, DB upsert on first sign-in |
 | `src/lib/db.ts` | Neon serverless SQL client via `@neondatabase/serverless` |
+| `src/lib/hf.ts` | HuggingFace Inference client — calls FLUX.1-schnell, returns base64 data URL |
 | `src/store/useStore.ts` | Zustand global state: active tab, theme, modal visibility, selected image |
 | `src/types/index.ts` | `Image`, `User`, `TabId`, `RESOLUTIONS`, `COLOR_OPTIONS` constants |
 
@@ -51,7 +52,7 @@ src/components/
 
 | Route | Method | Auth | Description |
 |-------|--------|------|-------------|
-| `/api/generate` | POST | Required | Generate image via DALL-E 3, save to DB |
+| `/api/generate` | POST | Required | Generate image via HuggingFace FLUX.1-schnell, save to DB |
 | `/api/feed` | GET | Optional | All images, supports `?q=` full-text search |
 | `/api/feed/save` | POST | Required | Bookmark (`save: true`) or unbookmark an image |
 | `/api/image/[imageId]` | GET | Optional | Single image details |
