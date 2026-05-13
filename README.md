@@ -13,15 +13,15 @@ A full-stack AI image generator built with Next.js 16, powered by HuggingFace FL
 
 ## Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| Framework | Next.js 16 (App Router) |
-| Language | TypeScript |
-| Auth | NextAuth v5 — GitHub OAuth |
-| Database | Neon PostgreSQL (`@neondatabase/serverless`) |
-| Image AI | HuggingFace Inference API — FLUX.1-schnell |
-| State | Zustand |
-| Styling | CSS Modules + CSS custom properties |
+| Layer     | Technology                                   |
+| --------- | -------------------------------------------- |
+| Framework | Next.js 16 (App Router)                      |
+| Language  | TypeScript                                   |
+| Auth      | NextAuth v5 — GitHub OAuth                   |
+| Database  | Neon PostgreSQL (`@neondatabase/serverless`) |
+| Image AI  | HuggingFace Inference API — FLUX.1-schnell   |
+| State     | Zustand                                      |
+| Styling   | CSS Modules + CSS custom properties          |
 
 ## Getting Started
 
@@ -82,12 +82,39 @@ Open [http://localhost:3000](http://localhost:3000).
 ## Scripts
 
 ```bash
-npm run dev      # Dev server with hot reload
-npm run build    # Production build
-npm run start    # Serve production build
-npm run lint     # ESLint
-npx tsc --noEmit # Type-check without building
+npm run dev          # Dev server with hot reload
+npm run build        # Production build
+npm run start        # Serve production build
+npm run lint         # ESLint
+npm run test         # Run unit tests
+npm run test:coverage # Run tests with coverage report
+npx tsc --noEmit     # Type-check without building
 ```
+
+## Testing
+
+The project has a full unit test suite with **100% code coverage** (statements, branches, functions, and lines).
+
+```bash
+npm test                # Run all 202 tests
+npm run test:coverage   # Run tests + generate coverage report
+```
+
+**Test stack:** Jest · ts-jest · React Testing Library · jsdom
+
+**What's covered:**
+
+| Layer | Tests |
+|-------|-------|
+| Types & constants | `RESOLUTIONS`, `COLOR_OPTIONS` |
+| Zustand store | All actions and initial state |
+| `lib/db` | Neon and pg-Pool paths, `upsertUser` |
+| `lib/hf` | `textToImageBase64`, resolution parsing |
+| `src/auth` | NextAuth config, `jwt` and `session` callbacks |
+| API routes | All 7 routes — auth, error, and edge-case branches |
+| React components | All 7 components + page shell |
+
+Tests live in `src/__tests__/`. API route tests use `@jest-environment node` to access Web platform globals (`Request`, `Response`).
 
 ## Project Structure
 

@@ -5,11 +5,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-npm run dev      # Start dev server at http://localhost:3000
-npm run build    # Production build
-npm run start    # Run production build
-npm run lint     # Run ESLint
-npx tsc --noEmit # Type-check without building
+npm run dev           # Start dev server at http://localhost:3000
+npm run build         # Production build
+npm run start         # Run production build
+npm run lint          # Run ESLint
+npm run test          # Run unit tests (202 tests, 100% coverage)
+npm run test:coverage # Run tests with coverage report
+npx tsc --noEmit      # Type-check without building
 ```
 
 ## Environment Variables
@@ -79,3 +81,20 @@ saved_images    — user_id + image_id (unique pair), created_at
 ### Path Aliases
 
 `@/` maps to `./src/` (tsconfig). Example: `@/components/Sidebar/Sidebar`.
+
+## Testing
+
+**Stack:** Jest · ts-jest · React Testing Library · `jest-environment-jsdom`
+
+**Config:** `jest.config.ts` at the project root — path aliases mirror tsconfig, CSS files use `identity-obj-proxy`, image/SVG imports use `src/__mocks__/fileMock.ts`.
+
+**Test files:** `src/__tests__/*.test.(ts|tsx)` — one file per source module.
+
+**Key conventions:**
+- API route tests add `/** @jest-environment node */` at the top to get Web platform globals (`Request`, `Response`).
+- `next/image` is mocked globally to render a plain `<img>` (see `src/__mocks__/next-image.tsx`).
+- `next-auth/react` and `@/auth` are mocked per test file with `jest.mock(...)`.
+- Zustand store is reset between tests via `useStore.setState(...)` in `beforeEach`.
+- `global.fetch` is mocked inline for components that call API routes.
+
+**Coverage:** 100% statements, branches, functions, and lines across all source files.
