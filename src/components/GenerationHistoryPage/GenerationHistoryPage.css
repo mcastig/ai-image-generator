@@ -1,5 +1,5 @@
 .history-page {
-  padding: 32px;
+  padding: 32px 40px;
   height: 100%;
   overflow-y: auto;
 }
@@ -8,7 +8,7 @@
   font-size: 1.25rem;
   font-weight: 600;
   color: var(--color-text-primary);
-  margin: 0 0 24px;
+  margin: 0 0 40px;
 }
 
 .history-page__loading {
@@ -37,70 +37,74 @@
 .history-page__list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 0;
 }
 
 .history-page__item {
   display: flex;
-  gap: 20px;
-  background: var(--color-bg-secondary);
-  border-radius: 12px;
-  padding: 16px;
+  gap: 40px;
   cursor: pointer;
-  transition: background 0.2s;
   align-items: flex-start;
+  padding-bottom: 48px;
+  border-bottom: 1px solid var(--color-border);
 }
 
-.history-page__item:hover {
-  background: var(--color-border);
+.history-page__item + .history-page__item {
+  padding-top: 48px;
+}
+
+.history-page__item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
 }
 
 .history-page__item-img {
-  width: 120px;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 10px;
+  width: 220px;
   flex-shrink: 0;
+  border-radius: 12px;
+  object-fit: cover;
+  display: block;
 }
 
-.history-page__item-info {
+.history-page__item-details {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px 40px;
   min-width: 0;
 }
 
-.history-page__item-prompt {
-  font-size: 0.9375rem;
-  color: var(--color-text-primary);
-  line-height: 1.5;
-  margin: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.history-page__item-meta {
+.history-page__item-col {
   display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
+  flex-direction: column;
+  gap: 24px;
 }
 
-.history-page__item-date,
-.history-page__item-resolution,
-.history-page__item-seed {
+.history-page__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.history-page__field-label {
   font-size: 0.75rem;
   color: var(--color-text-muted);
   font-weight: 500;
+}
+
+.history-page__field-value {
+  font-size: 0.9375rem;
+  color: var(--color-text-primary);
+  line-height: 1.6;
 }
 
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
 
-@media (max-width: 600px) {
-  .history-page { padding: 16px; }
-  .history-page__item-img { width: 80px; height: 80px; }
+@media (max-width: 900px) {
+  .history-page { padding: 20px; }
+  .history-page__item { flex-direction: column; }
+  .history-page__item-img { width: 100%; }
+  .history-page__item-details { grid-template-columns: 1fr; }
 }

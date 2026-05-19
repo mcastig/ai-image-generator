@@ -3,7 +3,12 @@
 import { useState, useEffect } from "react";
 import { useStore } from "@/store/useStore";
 import type { Image as ImageType } from "@/types";
+import { RESOLUTIONS } from "@/types";
 import "./GenerationHistoryPage.css";
+
+function formatResolution(value: string) {
+  return RESOLUTIONS.find((r) => r.value === value)?.label ?? value;
+}
 
 export default function GenerationHistoryPage() {
   const [images, setImages] = useState<ImageType[]>([]);
@@ -49,6 +54,7 @@ export default function GenerationHistoryPage() {
           {images.map((image) => {
             const imageUrl = image.image_url ?? image.imageUrl ?? "";
             const createdAt = image.created_at ?? image.createdAt ?? "";
+            const negativePrompt = image.negative_prompt ?? image.negativePrompt;
 
             return (
               <div
@@ -56,15 +62,35 @@ export default function GenerationHistoryPage() {
                 className="history-page__item"
                 onClick={() => handleClick(image)}
               >
-                <img src={imageUrl} alt={image.prompt} className="history-page__item-img" />
-                <div className="history-page__item-info">
-                  <p className="history-page__item-prompt">{image.prompt}</p>
-                  <div className="history-page__item-meta">
-                    <span className="history-page__item-date">{formatDate(createdAt)}</span>
-                    <span className="history-page__item-resolution">{image.resolution}</span>
-                    {image.seed && (
-                      <span className="history-page__item-seed">Seed: {image.seed}</span>
+                <img src={imageUrl || undefined} alt={image.prompt} className="history-page__item-img" />
+
+                <div className="history-page__item-details">
+                  <div className="history-page__item-col">
+                    <div className="history-page__field">
+                      <span className="history-page__field-label">Prompt details</span>
+                      <span className="history-page__field-value">{image.prompt}</span>
+                    </div>
+                    <div className="history-page__field">
+                      <span className="history-page__field-label">Created on</span>
+                      <span className="history-page__field-value">{formatDate(createdAt)}</span>
+                    </div>
+                    {!!image.seed && (
+                      <div className="history-page__field">
+                        <span className="history-page__field-label">Seed</span>
+                        <span className="history-page__field-value">{image.seed}</span>
+                      </div>
                     )}
+                  </div>
+
+                  <div className="history-page__item-col">
+                    <div className="history-page__field">
+                      <span className="history-page__field-label">Negative prompt</span>
+                      <span className="history-page__field-value">{negativePrompt || "Null"}</span>
+                    </div>
+                    <div className="history-page__field">
+                      <span className="history-page__field-label">Input Resolution</span>
+                      <span className="history-page__field-value">{formatResolution(image.resolution)}</span>
+                    </div>
                   </div>
                 </div>
               </div>
