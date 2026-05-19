@@ -40,12 +40,12 @@ Single-page app: the root `src/app/page.tsx` renders all "pages" as tab-switched
 
 ```
 src/components/
-├── Sidebar/              — Left nav (icons on desktop, slide-in on mobile), theme toggle, auth
+├── Sidebar/              — Icon-only nav on desktop; right-side slide-in drawer on mobile with X close button
 ├── GeneratePage/         — Prompt form + image preview panel (two-column layout)
-├── FeedPage/             — Masonry grid with search bar
-├── ImageCard/            — Card with image, author, bookmark button
+├── FeedPage/             — Masonry grid with vertically scrolling layout and search bar (transparent, icon right)
+├── ImageCard/            — Image with rounded corners; author + bookmark footer below (transparent bg)
 ├── ImageDetailModal/     — Full image + metadata + download + "Generate with settings"
-├── GenerationHistoryPage/— List of user's generated images
+├── GenerationHistoryPage/— Large image left, two-column metadata right; items separated by border dividers
 ├── MyCollectionPage/     — Grid of bookmarked images
 └── SignInModal/          — GitHub sign-in prompt
 ```
@@ -76,7 +76,31 @@ saved_images    — user_id + image_id (unique pair), created_at
 - CSS custom properties defined in `src/app/globals.css` (dark theme default, `[data-theme="light"]` override)
 - Theme toggle stored in Zustand, applied to `document.documentElement` in `page.tsx`
 - Font: Inter (loaded via Google Fonts `@import` in globals.css)
-- Mobile breakpoint: 768px — sidebar becomes a slide-in drawer, mobile header appears
+- Mobile breakpoint: 768px — sidebar becomes a right-side slide-in drawer, mobile header appears
+- Sidebar and mobile header use `--color-bg-primary` to match the main content background in both themes
+
+### Sidebar behaviour
+
+- **Desktop**: fixed 60px-wide left column, icon-only nav items, icon-only sign-in button
+- **Mobile**: full-height drawer that slides in from the **right** (`transform: translateX(100%)` → `translateX(0)`); shows an X close button (dark rounded button) at the top, text labels next to icons, full-width sign-in button, user avatar centred at the bottom
+
+### FeedPage layout
+
+- The entire page (search bar + grid) scrolls as one vertical unit (`overflow-y: auto` on `.feed-page`)
+- Search bar: transparent background, border only, search icon on the **right** as a submit button
+- Grid: CSS `columns: 4` masonry (responsive down to 1 column at 580px)
+
+### GenerationHistoryPage layout
+
+- Each item: large image on the left (220px wide, natural height) + two-column metadata grid on the right
+- Left metadata column: Prompt details → Created on → Seed
+- Right metadata column: Negative prompt → Input Resolution (looked up from `RESOLUTIONS` array)
+- Items separated by a `1px` border with 48px padding above and below; no card background
+
+### ImageCard layout
+
+- `overflow: visible` on the card; image has its own `border-radius: 12px`
+- Footer (author avatar + name + bookmark button) sits below the image with `background: transparent`
 
 ### Path Aliases
 

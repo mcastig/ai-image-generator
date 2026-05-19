@@ -5,11 +5,11 @@ A full-stack AI image generator built with Next.js 16, powered by HuggingFace FL
 ## Features
 
 - **Text-to-image generation** — prompt, negative prompt, color tint, resolution, and guidance scale
-- **Community feed** — browsable masonry grid with full-text search
-- **Personal history** — all images you've generated
+- **Community feed** — masonry grid with full-text search; whole page scrolls vertically
+- **Generation history** — large image + two-column metadata view (prompt, negative prompt, resolution, seed, date)
 - **Collections** — bookmark any image from the feed
-- **Dark / light theme** — persisted via Zustand
-- **Responsive** — desktop two-column layout, mobile sidebar drawer
+- **Dark / light theme** — persisted via Zustand; sidebar matches content background in both themes
+- **Responsive** — desktop icon-only sidebar, mobile right-side drawer with close button
 
 ## Tech Stack
 
@@ -144,3 +144,15 @@ images       — id, user_id, prompt, negative_prompt, color, resolution,
                guidance, image_url, seed, created_at
 saved_images — user_id, image_id, created_at
 ```
+
+## UI Overview
+
+### Feed
+Masonry grid (4 columns → 1 on mobile). The whole page scrolls vertically. Each card shows the image with rounded corners and the author + bookmark button below it on a transparent background. The search bar at the top has a transparent fill with the search icon on the right.
+
+### Generation History
+Each entry shows a large image on the left and a two-column metadata panel on the right: **Prompt details / Created on / Seed** in the left column and **Negative prompt / Input Resolution** in the right column. Entries are divided by a subtle border with generous spacing — no card backgrounds.
+
+### Sidebar
+- **Desktop**: 60px fixed left column, icon-only.
+- **Mobile**: full-height drawer that slides in from the **right**. The top shows a styled X close button; nav items display icons with text labels; the user avatar is centred at the bottom.
