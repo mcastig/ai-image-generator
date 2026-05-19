@@ -82,21 +82,23 @@ describe("GenerationHistoryPage", () => {
   it("displays resolution", async () => {
     render(<GenerationHistoryPage />);
     await waitFor(() => {
-      expect(screen.getByText("1024x1024")).toBeInTheDocument();
+      expect(screen.getByText("1024 × 1024 (1:1)")).toBeInTheDocument();
     });
   });
 
   it("displays seed when present", async () => {
     render(<GenerationHistoryPage />);
     await waitFor(() => {
-      expect(screen.getByText(/Seed: 100/)).toBeInTheDocument();
+      expect(screen.getByText("Seed")).toBeInTheDocument();
+      expect(screen.getByText("100")).toBeInTheDocument();
     });
   });
 
   it("does not display seed when seed is 0 (falsy)", async () => {
     render(<GenerationHistoryPage />);
     await waitFor(() => {
-      expect(screen.queryByText(/Seed: 0/)).not.toBeInTheDocument();
+      // Only image with seed=100 renders a Seed field; seed=0 is falsy and hidden
+      expect(screen.queryAllByText("Seed")).toHaveLength(1);
     });
   });
 
@@ -133,7 +135,7 @@ describe("GenerationHistoryPage", () => {
     });
   });
 
-  it("falls back to empty string when both imageUrl/createdAt forms are absent", async () => {
+  it("renders img without src attribute when both imageUrl forms are absent", async () => {
     const imgs = [{
       ...fakeImages[0],
       imageUrl: undefined as unknown as string,
@@ -147,8 +149,30 @@ describe("GenerationHistoryPage", () => {
     render(<GenerationHistoryPage />);
     await waitFor(() => {
       const imgEl = document.querySelector(".history-page__item-img") as HTMLImageElement;
-      // empty src falls back to base URL in jsdom
       expect(imgEl).toBeInTheDocument();
+      expect(imgEl.getAttribute("src")).toBeNull();
+    });
+  });
+
+  it("falls back to raw resolution string when value is not in RESOLUTIONS", async () => {
+    const imgs = [{ ...fakeImages[0], resolution: "custom_res" }];
+    global.fetch = jest.fn().mockResolvedValue({
+      json: jest.fn().mockResolvedValue({ images: imgs }),
+    });
+    render(<GenerationHistoryPage />);
+    await waitFor(() => {
+      expect(screen.getByText("custom_res")).toBeInTheDocument();
+    });
+  });
+
+  it("uses snake_case negative_prompt when present", async () => {
+    const imgs = [{ ...fakeImages[0], negative_prompt: "blurry, low quality" }];
+    global.fetch = jest.fn().mockResolvedValue({
+      json: jest.fn().mockResolvedValue({ images: imgs }),
+    });
+    render(<GenerationHistoryPage />);
+    await waitFor(() => {
+      expect(screen.getByText("blurry, low quality")).toBeInTheDocument();
     });
   });
 
