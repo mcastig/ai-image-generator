@@ -2,7 +2,8 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .feed-page__search-bar {
@@ -15,11 +16,21 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  background: var(--color-bg-secondary);
+  background: transparent;
   border: 1px solid var(--color-border);
   border-radius: 10px;
-  padding: 10px 16px;
+  padding: 16px;
   max-width: 600px;
+}
+
+.feed-page__search-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  flex-shrink: 0;
 }
 
 .feed-page__search-icon {
@@ -42,8 +53,6 @@
 }
 
 .feed-page__grid {
-  flex: 1;
-  overflow-y: auto;
   padding: 20px 24px;
   columns: 4;
   column-gap: 16px;
@@ -75,18 +84,29 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media (max-width: 1200px) {
-  .feed-page__grid { columns: 3; }
+  .feed-page__grid {
+    columns: 3;
+  }
 }
 
 @media (max-width: 900px) {
-  .feed-page__grid { columns: 2; }
+  .feed-page__grid {
+    columns: 2;
+  }
 }
 
 @media (max-width: 580px) {
-  .feed-page__grid { columns: 1; padding: 12px; }
-  .feed-page__search-bar { padding: 12px; }
+  .feed-page__grid {
+    columns: 1;
+    padding: 12px;
+  }
+  .feed-page__search-bar {
+    padding: 12px;
+  }
 }

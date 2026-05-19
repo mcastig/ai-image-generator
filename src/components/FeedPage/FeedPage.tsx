@@ -46,13 +46,15 @@ export default function FeedPage() {
     <div className="feed-page">
       <div className="feed-page__search-bar">
         <form onSubmit={handleSearch} className="feed-page__search-form">
-          <Image src="/resources/Search.svg" alt="Search" width={18} height={18} className="feed-page__search-icon" />
           <input
             className="feed-page__search-input"
             placeholder="Search images by keywords"
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
           />
+          <button type="submit" className="feed-page__search-btn">
+            <Image src="/resources/Search.svg" alt="Search" width={18} height={18} className="feed-page__search-icon" />
+          </button>
         </form>
       </div>
 
