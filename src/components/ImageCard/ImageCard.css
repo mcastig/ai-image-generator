@@ -1,9 +1,8 @@
 .image-card {
   border-radius: 12px;
-  overflow: hidden;
+  overflow: visible;
   cursor: pointer;
   position: relative;
-  background: var(--color-bg-secondary);
   break-inside: avoid;
   margin-bottom: 16px;
   transition: transform 0.2s;
@@ -17,14 +16,15 @@
   width: 100%;
   display: block;
   object-fit: cover;
+  border-radius: 12px;
 }
 
 .image-card__footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 12px;
-  background: var(--color-bg-secondary);
+  padding: 8px 4px;
+  background: transparent;
 }
 
 .image-card__author {
